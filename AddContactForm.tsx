@@ -1,7 +1,8 @@
-import React from 'react'
-import { Button, StyleSheet, TextInput, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { Button, StyleSheet, TextInput, View, KeyboardAvoidingView } from 'react-native'
 import Constants from 'expo-constants'
 import { Contact } from './types'
+import { number } from 'prop-types'
 
 const styles = StyleSheet.create({
     container: {
@@ -21,14 +22,28 @@ const styles = StyleSheet.create({
     },
 })
 
+const isValidNumber = (number: string): boolean => {
+    return (+number >= 0 && number.length === 10)
+}
+
 const AddContactForm = (props: { onSubmit: (contact: Contact) => void; }) => {
     const [name, setName] = React.useState("")
     const [phone, setPhone] = React.useState("")
+    const [isValidForm, setIsValidForm] = React.useState(false)
 
     const handleSubmit = () => { props.onSubmit({ name: name, phone: phone }); }
 
+    const handlePhoneChange = (newNumber: string) => {
+        if (+newNumber >= 0 && newNumber.length <= 10)
+            setPhone(newNumber)
+    }
+
+    useEffect(() => {
+        setIsValidForm(isValidNumber(phone) && name.length > 0)
+    }, [phone, name])
+
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <TextInput
                 style={styles.input}
                 value={name}
@@ -39,11 +54,40 @@ const AddContactForm = (props: { onSubmit: (contact: Contact) => void; }) => {
                 keyboardType="numeric"
                 style={styles.input}
                 value={phone}
-                onChangeText={setPhone}
+                onChangeText={handlePhoneChange}
                 placeholder="Phone"
             />
-            <Button title="Submit" onPress={handleSubmit} />
-        </View>
+            <TextInput
+                keyboardType="numeric"
+                style={styles.input}
+                value={phone}
+                onChangeText={handlePhoneChange}
+                placeholder="Phone"
+            />
+            <TextInput
+                keyboardType="numeric"
+                style={styles.input}
+                value={phone}
+                onChangeText={handlePhoneChange}
+                placeholder="Phone"
+            />
+            <TextInput
+                keyboardType="numeric"
+                style={styles.input}
+                value={phone}
+                onChangeText={handlePhoneChange}
+                placeholder="Phone"
+            />
+            <TextInput
+                keyboardType="numeric"
+                style={styles.input}
+                value={phone}
+                onChangeText={handlePhoneChange}
+                placeholder="Phone"
+            />
+
+            <Button title="Submit" onPress={handleSubmit} disabled={!isValidForm} />
+        </KeyboardAvoidingView>
     )
 }
 
