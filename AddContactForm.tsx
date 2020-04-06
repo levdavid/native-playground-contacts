@@ -25,9 +25,7 @@ const AddContactForm = (props: { onSubmit: (contact: Contact) => void; }) => {
     const [name, setName] = React.useState("")
     const [phone, setPhone] = React.useState("")
 
-    // handleSubmit = () => {
-    //     this.props.onSubmit(this.state)
-    // }
+    const handleSubmit = () => { props.onSubmit({ name: name, phone: phone }); }
 
     return (
         <View style={styles.container}>
@@ -44,7 +42,7 @@ const AddContactForm = (props: { onSubmit: (contact: Contact) => void; }) => {
                 onChangeText={setPhone}
                 placeholder="Phone"
             />
-            <Button title="Submit" onPress={() => console.log(`user tried to submit name=${name}, phone=${phone}`)} />
+            <Button title="Submit" onPress={handleSubmit} />
         </View>
     )
 }

@@ -16,7 +16,8 @@ const App = () => {
   }
 
   function addContact(newContact: Contact) {
-    setContactList([...contactList, newContact])
+    setContactList([...contactList, newContact]);
+    setShowForm(false)
   }
 
   if (showForm) return <AddContactForm onSubmit={addContact} />
